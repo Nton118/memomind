@@ -29,8 +29,17 @@ class Console(UserIO):
     def user_output(*output):
         print(*output)
         
-    def user_input(*input_):
-        return input(*input_)
+    def user_input(*input):
+        return input(*input)
+
+
+class Console_sound(UserIO):
+
+    def user_output(*output):
+        print(voice(*output))
+        
+    def user_input(voice(*input)):
+        return voice(input(*input))
 
 
 class Field:

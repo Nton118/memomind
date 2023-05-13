@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-from ab_classes import dir_path
+
 import shutil
 from translit import normalize
 import json
@@ -13,6 +13,9 @@ known_types = set()
 unknown_types = set()
 deleted_folders = []
 
+languages = True
+
+dir_path = os.path.dirname(__file__)
 
 def read_config():
     global CATEGORIES

@@ -1,15 +1,4 @@
-from ab_classes import (
-    dir_path,
-    Console,
-    Name, 
-    Birthday,
-    Email,
-    Phone,
-    Address,
-    Record,
-    AddressBook,
-    NotePad, 
-)
+from ab_classes import *
 from functools import wraps
 import json
 import os
@@ -189,17 +178,18 @@ def change(
 ):
     rec = book.get(contact)
 
-    Console.user_output(rec.show_phones())
+    print(rec.show_phones())
 
     if not rec.phones:
         if not phone:
             if languages:
                 phone_new = Phone(
-                    Console.user_input(voice("If you want to add a phone number, enter the number:"))
+                    input(voice("If you want to add a phone number, enter the number:"))
                 )
             else:
                 phone_new = Phone(
-                    Console.user_input("Якщо хочете додати телефон введіть номер:"))
+                    input(voice("Якщо хочете додати телефон введіть номер:"))
+                )
         else:
             phone_new = Phone(phone)
         rec.add_phone(phone_new)
@@ -214,15 +204,15 @@ def change(
         if len(rec.phones) > 1:
             if languages:
                 num = int(
-                    Console.user_input(voice("Which one do you want to change (enter index):"))
+                    input(voice("Which one do you want to change (enter index):"))
                 )
             else:
-                num = int(Console.user_input("Який ви хочете змінити (введіть індекс):"))
+                num = int(input(voice("Який ви хочете змінити (введіть індекс):")))
         if not phone:
             if languages:
-                phone_new = Phone(Console.user_input(voice("Please enter a new number:")))
+                phone_new = Phone(input(voice("Please enter a new number:")))
             else:
-                phone_new = Phone(Console.user_input("Будь ласка введіть новий номер:"))
+                phone_new = Phone(input(voice("Будь ласка введіть новий номер:")))
         else:
             phone_new = Phone(phone)
         old_phone = rec.phones[num - 1]
@@ -249,9 +239,9 @@ def change_email(
 
     if not email:
         if languages:
-            email_new = Console.user_input(voice("If you want to change the e-mail, enter a new address: "))
+            email_new = input("If you want to change the e-mail, enter a new address: ")
         else:
-            email_new = Console.user_input("Якщо хочете змінити e-mail введіть нову адресу: ")
+            email_new = input("Якщо хочете змінити e-mail введіть нову адресу: ")
     else:
         email_new = email
 
@@ -283,11 +273,11 @@ def change_address(book: AddressBook, contact: str, *address):
         if not x:
             if languages:
                 address_new = Address(
-                    Console.user_input(voice("If you want to add an address, enter it:"))
+                    input(voice("If you want to add an address, enter it:"))
                 )
             else:
                 address_new = Address(
-                    Console.user_input("Якщо хочете додати адресу, введіть її:")
+                    input(voice("Якщо хочете додати адресу, введіть її:"))
                 )
         else:
             address_new = Address(x)
@@ -299,9 +289,9 @@ def change_address(book: AddressBook, contact: str, *address):
     else:
         if not x:
             if languages:
-                address_new = Address(Console.user_input(voice("Please enter a new address:")))
+                address_new = Address(input(voice("Please enter a new address:")))
             else:
-                address_new = Address(Console.user_input("Будь ласка, введіть нову адресу:"))
+                address_new = Address(input(voice("Будь ласка, введіть нову адресу:")))
         else:
             address_new = Address(x)
         old_address = rec.address
@@ -342,9 +332,9 @@ def del_contact(book: AddressBook, *args):
     ans = None
     while ans != "y":
         if languages:
-            ans = Console.user_input(voice(f"Are you sure you want to delete {contact}? (Y/N)")).lower()
+            ans = input(f"Are you sure you want to delete {contact}? (Y/N)").lower()
         else:
-            ans = Console.user_input(
+            ans = input(
                 f"Ви впевнені що хочете видалити контакт {contact}? (Y/N)"
             ).lower()
     if languages:
@@ -376,14 +366,13 @@ def del_address(book: AddressBook, *args):
 
 
 def load_data(book1: AddressBook, notebook: NotePad):
-    global db_file_name, note_file_name, PAGE, languages, sound
+    global db_file_name, note_file_name, PAGE, languages
     with open(os.path.join(dir_path, "config.JSON")) as cfg:
         cfg_data = json.load(cfg)
         db_file_name = os.path.join(dir_path, cfg_data["PhoneBookFile"])
         note_file_name = os.path.join(dir_path, cfg_data["NoteBookFile"])
         PAGE = cfg_data["Page"]
         languages = True if cfg_data["Language"] == "eng" else False
-        sound = True if cfg_data["Sound"] == "ON" else False
         
     if Path(db_file_name).exists():
         book1.load_from_file(db_file_name)
@@ -405,7 +394,6 @@ def phone(book: AddressBook, *args):
 def save_data(book: AddressBook, notebook: NotePad):
     book.save_to_file(db_file_name)
     notebook.save_to_file(note_file_name)
-    
 
 
 def show_all(book: AddressBook, *args):
@@ -415,13 +403,13 @@ def show_all(book: AddressBook, *args):
         gen_obj = book.iterator(PAGE)
         for i in gen_obj:
             if languages:
-                Console.user_output(voice(i))
-                Console.user_output("*" * 50)
-                Console.user_input(voice("Press any key"))
+                print(i)
+                print("*" * 50)
+                input("Press any key")
             else:
-                Console.user_output(i)
-                Console.user_output("*" * 50)
-                Console.user_input("Нажміть будь-яку клавішу")
+                print(i)
+                print("*" * 50)
+                input("Нажміть будь-яку клавішу")
         x = book.lening()
         if languages:
             return f"Total: {x} contacts."
@@ -465,7 +453,7 @@ def sort_targ_folder(book: AddressBook, *args):
 
 
 def voice(content, *yes):
-    global sound
+    sound
     engine = pyttsx3.init("sapi5")
     if sound:
         engine.say(content)
@@ -489,14 +477,14 @@ def exit(book: AddressBook, notebook: NotePad, *args):
     is_ended = True
     save_data(book, notebook)
     if languages:
-        return voice("Good bye")
+        return voice("Good bye") if sound else "Good bye"
     else:
         return "До побачення"
 
 
 def no_command(*args):
     if languages:
-        return voice("There is no such command")
+        return "There is no such command"
     else:
         return "Такої команди немає"
 
@@ -504,11 +492,6 @@ def no_command(*args):
 def off_sound(book, *args):
     global sound
     sound = False
-    with open(os.path.join(dir_path, "config.JSON"), "r") as cfg:
-        cfg_data = json.load(cfg)
-    with open(os.path.join(dir_path, "config.JSON"), "w") as cfg:
-        cfg_data["Sound"] = "OFF"
-        json.dump(cfg_data, cfg)
     if languages:
         return "Sound off"
     else:
@@ -517,13 +500,8 @@ def off_sound(book, *args):
 
 def on_sound(book, *args):
     global sound
-    sound = True
-    with open(os.path.join(dir_path, "config.JSON"), "r") as cfg:
-        cfg_data = json.load(cfg)
-    with open(os.path.join(dir_path, "config.JSON"), "w") as cfg:
-        cfg_data["Sound"] = "ON"
-        json.dump(cfg_data, cfg)
     if languages:
+        sound = True
         return "Sound on"
     else:
         return "В український версії читання вголос поки ще не доступне"
@@ -614,45 +592,47 @@ def main():
     notebook = NotePad()
     load_data(book1, notebook)
     if languages:
-        Console.user_output(
+        print(
             "MemoMind \n",
             f"Available commands: {', '.join(k for k in COMMANDS.keys())}",
         )
     else:
-        Console.user_output(
+        print(
             "MemoMind \n",
             f"Доступні команди: {', '.join(k for k in COMMANDS.keys())}",
         )
     
     while not is_ended:   
-        s = Console.user_input(">>>")
+        s = input(">>>")
         command, args = command_parser(s)
         if languages:
             if sound:
                 if command == exit:
-                    Console.user_output(command(book1, notebook), *args)
+                    print(command(book1, notebook), *args)
                 elif command == sort_targ_folder:
-                    Console.user_output(command(book1), *args)
+                    print(command(book1), *args)
                 elif command == help:
-                    Console.user_output(command(book1, notebook), *args)
+                    print(command(book1, notebook), *args)
                 else:
-                    Console.user_output(voice
-                                        (command(
+                    print(
+                        voice(
+                            command(
                                 (notebook if command in WITH_NOTES else book1), *args
-                            ))
+                            )
+                        )
                     )
             else:
                 if command == exit:
-                    Console.user_output(command(book1, notebook), *args)
+                    print(command(book1, notebook), *args)
                 else:
-                    Console.user_output(
+                    print(
                         command((notebook if command in WITH_NOTES else book1), *args)
                     )
         else:
             if command == exit:
-                Console.user_output(command(book1, notebook), *args)
+                print(command(book1, notebook), *args)
             else:
-                Console.user_output(command((notebook if command in WITH_NOTES else book1), *args))
+                print(command((notebook if command in WITH_NOTES else book1), *args))
 
 
 if __name__ == "__main__":

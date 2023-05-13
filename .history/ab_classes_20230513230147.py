@@ -24,13 +24,14 @@ class UserIO(ABC):
     def user_input(self):
         pass
 
-class Console(UserIO):
+class Console(UserIO_ABC):
 
     def user_output(*output):
         print(*output)
         
-    def user_input(*input_):
-        return input(*input_)
+    def user_input(*input):
+        input(*input)
+
 
 
 class Field:

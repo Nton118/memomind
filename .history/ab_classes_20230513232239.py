@@ -33,6 +33,15 @@ class Console(UserIO):
         return input(*input_)
 
 
+class Console_sound(UserIO):
+
+    def user_output(*output):
+        print(voice(*output))
+        
+    def user_input(*input_):
+        return voice(input(*input_))
+
+
 class Field:
     def __init__(self, value):
         self.__value = None

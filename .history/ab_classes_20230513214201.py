@@ -14,25 +14,6 @@ with open(os.path.join(dir_path, "config.JSON")) as cfg:
     languages = True if cfg_data["Language"] == "eng" else False
 
 
-class UserIO(ABC):
-    
-    @abstractmethod
-    def user_output(self):
-        pass
-    
-    @abstractmethod
-    def user_input(self):
-        pass
-
-class Console(UserIO):
-
-    def user_output(*output):
-        print(*output)
-        
-    def user_input(*input_):
-        return input(*input_)
-
-
 class Field:
     def __init__(self, value):
         self.__value = None

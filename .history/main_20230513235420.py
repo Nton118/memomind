@@ -405,7 +405,6 @@ def phone(book: AddressBook, *args):
 def save_data(book: AddressBook, notebook: NotePad):
     book.save_to_file(db_file_name)
     notebook.save_to_file(note_file_name)
-    
 
 
 def show_all(book: AddressBook, *args):
@@ -504,11 +503,6 @@ def no_command(*args):
 def off_sound(book, *args):
     global sound
     sound = False
-    with open(os.path.join(dir_path, "config.JSON"), "r") as cfg:
-        cfg_data = json.load(cfg)
-    with open(os.path.join(dir_path, "config.JSON"), "w") as cfg:
-        cfg_data["Sound"] = "OFF"
-        json.dump(cfg_data, cfg)
     if languages:
         return "Sound off"
     else:
@@ -517,13 +511,8 @@ def off_sound(book, *args):
 
 def on_sound(book, *args):
     global sound
-    sound = True
-    with open(os.path.join(dir_path, "config.JSON"), "r") as cfg:
-        cfg_data = json.load(cfg)
-    with open(os.path.join(dir_path, "config.JSON"), "w") as cfg:
-        cfg_data["Sound"] = "ON"
-        json.dump(cfg_data, cfg)
     if languages:
+        sound = True
         return "Sound on"
     else:
         return "В український версії читання вголос поки ще не доступне"

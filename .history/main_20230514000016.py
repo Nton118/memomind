@@ -504,11 +504,9 @@ def no_command(*args):
 def off_sound(book, *args):
     global sound
     sound = False
-    with open(os.path.join(dir_path, "config.JSON"), "r") as cfg:
+    with open(os.path.join(dir_path, "config.JSON"), "rw") as cfg:
         cfg_data = json.load(cfg)
-    with open(os.path.join(dir_path, "config.JSON"), "w") as cfg:
         cfg_data["Sound"] = "OFF"
-        json.dump(cfg_data, cfg)
     if languages:
         return "Sound off"
     else:
@@ -518,11 +516,9 @@ def off_sound(book, *args):
 def on_sound(book, *args):
     global sound
     sound = True
-    with open(os.path.join(dir_path, "config.JSON"), "r") as cfg:
+    with open(os.path.join(dir_path, "config.JSON"), "rw") as cfg:
         cfg_data = json.load(cfg)
-    with open(os.path.join(dir_path, "config.JSON"), "w") as cfg:
         cfg_data["Sound"] = "ON"
-        json.dump(cfg_data, cfg)
     if languages:
         return "Sound on"
     else:

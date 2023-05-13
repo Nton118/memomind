@@ -263,16 +263,16 @@ def quick_choice(note_list):
             not_found = "Не знайдено"
 
 
-        Console.user_output(f"{notes_} {current_index}-{next_index}:")
+        print(f"{notes_} {current_index}-{next_index}:")
         for i, note in enumerate(notes, start=1):
-            Console.user_output(f"{i}. {note}")
+            print(f"{i}. {note}")
 
-        Console.user_outputt(f'{options}: ')
+        print(f'{options}: ')
         if next_index < note_count:
-            Console.user_output(f'"next" {next}')
-        Console.user_output(f'0. {exit}')
+            print(f'"next" {next}')
+        print(f'0. {exit}')
 
-        choice = Console.user_input(f'{enter} ')
+        choice =input(f'{enter} ')
 
         if choice == "next" and next_index < note_count:
             current_index = next_index

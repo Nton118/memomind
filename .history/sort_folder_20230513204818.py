@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-from ab_classes import dir_path
+
 import shutil
 from translit import normalize
 import json
@@ -13,6 +13,9 @@ known_types = set()
 unknown_types = set()
 deleted_folders = []
 
+languages = True
+
+dir_path = os.path.dirname(__file__)
 
 def read_config():
     global CATEGORIES
@@ -115,9 +118,9 @@ def normalize_all(path: Path):
 
 def report_category(category: str, files_lst: list):
     if languages:
-        return(f'Found files in category "{category.capitalize()}": ', len(files_lst))
+        print(f'Found files in category "{category.capitalize()}": ', len(files_lst))
     else:
-        return(
+        print(
             f'Знайдено файлів в категорії "{category.capitalize()}": ', len(files_lst)
         )
 

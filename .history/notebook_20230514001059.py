@@ -272,7 +272,7 @@ def quick_choice(note_list):
             Console.user_output(f'"next" {next}')
         Console.user_output(f'0. {exit}')
 
-        choice = Console.user_input(f'{enter} ')
+        choice = input(f'{enter} ')
 
         if choice == "next" and next_index < note_count:
             current_index = next_index

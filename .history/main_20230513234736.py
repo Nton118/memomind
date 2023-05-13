@@ -199,7 +199,8 @@ def change(
                 )
             else:
                 phone_new = Phone(
-                    Console.user_input("Якщо хочете додати телефон введіть номер:"))
+                    Console.user_input(voice("Якщо хочете додати телефон введіть номер:"))
+                )
         else:
             phone_new = Phone(phone)
         rec.add_phone(phone_new)
@@ -217,12 +218,12 @@ def change(
                     Console.user_input(voice("Which one do you want to change (enter index):"))
                 )
             else:
-                num = int(Console.user_input("Який ви хочете змінити (введіть індекс):"))
+                num = int(Console.user_input(voice("Який ви хочете змінити (введіть індекс):")))
         if not phone:
             if languages:
                 phone_new = Phone(Console.user_input(voice("Please enter a new number:")))
             else:
-                phone_new = Phone(Console.user_input("Будь ласка введіть новий номер:"))
+                phone_new = Phone(input(voice("Будь ласка введіть новий номер:")))
         else:
             phone_new = Phone(phone)
         old_phone = rec.phones[num - 1]
@@ -249,7 +250,7 @@ def change_email(
 
     if not email:
         if languages:
-            email_new = Console.user_input(voice("If you want to change the e-mail, enter a new address: "))
+            email_new = Console.user_input("If you want to change the e-mail, enter a new address: ")
         else:
             email_new = Console.user_input("Якщо хочете змінити e-mail введіть нову адресу: ")
     else:
@@ -283,11 +284,11 @@ def change_address(book: AddressBook, contact: str, *address):
         if not x:
             if languages:
                 address_new = Address(
-                    Console.user_input(voice("If you want to add an address, enter it:"))
+                    input(voice("If you want to add an address, enter it:"))
                 )
             else:
                 address_new = Address(
-                    Console.user_input("Якщо хочете додати адресу, введіть її:")
+                    input(voice("Якщо хочете додати адресу, введіть її:"))
                 )
         else:
             address_new = Address(x)
@@ -299,9 +300,9 @@ def change_address(book: AddressBook, contact: str, *address):
     else:
         if not x:
             if languages:
-                address_new = Address(Console.user_input(voice("Please enter a new address:")))
+                address_new = Address(input(voice("Please enter a new address:")))
             else:
-                address_new = Address(Console.user_input("Будь ласка, введіть нову адресу:"))
+                address_new = Address(input(voice("Будь ласка, введіть нову адресу:")))
         else:
             address_new = Address(x)
         old_address = rec.address
@@ -342,7 +343,7 @@ def del_contact(book: AddressBook, *args):
     ans = None
     while ans != "y":
         if languages:
-            ans = Console.user_input(voice(f"Are you sure you want to delete {contact}? (Y/N)")).lower()
+            ans = Console.user_input(f"Are you sure you want to delete {contact}? (Y/N)").lower()
         else:
             ans = Console.user_input(
                 f"Ви впевнені що хочете видалити контакт {contact}? (Y/N)"
@@ -405,7 +406,6 @@ def phone(book: AddressBook, *args):
 def save_data(book: AddressBook, notebook: NotePad):
     book.save_to_file(db_file_name)
     notebook.save_to_file(note_file_name)
-    
 
 
 def show_all(book: AddressBook, *args):
@@ -415,9 +415,9 @@ def show_all(book: AddressBook, *args):
         gen_obj = book.iterator(PAGE)
         for i in gen_obj:
             if languages:
-                Console.user_output(voice(i))
+                Console.user_output(i)
                 Console.user_output("*" * 50)
-                Console.user_input(voice("Press any key"))
+                Console.user_input("Press any key")
             else:
                 Console.user_output(i)
                 Console.user_output("*" * 50)
@@ -504,11 +504,6 @@ def no_command(*args):
 def off_sound(book, *args):
     global sound
     sound = False
-    with open(os.path.join(dir_path, "config.JSON"), "r") as cfg:
-        cfg_data = json.load(cfg)
-    with open(os.path.join(dir_path, "config.JSON"), "w") as cfg:
-        cfg_data["Sound"] = "OFF"
-        json.dump(cfg_data, cfg)
     if languages:
         return "Sound off"
     else:
@@ -517,13 +512,8 @@ def off_sound(book, *args):
 
 def on_sound(book, *args):
     global sound
-    sound = True
-    with open(os.path.join(dir_path, "config.JSON"), "r") as cfg:
-        cfg_data = json.load(cfg)
-    with open(os.path.join(dir_path, "config.JSON"), "w") as cfg:
-        cfg_data["Sound"] = "ON"
-        json.dump(cfg_data, cfg)
     if languages:
+        sound = True
         return "Sound on"
     else:
         return "В український версії читання вголос поки ще не доступне"
