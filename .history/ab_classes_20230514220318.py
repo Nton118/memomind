@@ -52,7 +52,7 @@ class Note:
     def __init__(self, text, tag=None, done=False):
         self.day = datetime.today()
         self.done = done
-        self.done_date = None
+        self.done_date = ""
         self.text = text
         self.tag_list = [tag] if tag else []
 
@@ -78,8 +78,7 @@ class Note:
     def from_dict(self, data):
         self.day = datetime.strptime(data["day"], "%d.%m.%Y")
         self.done = data["done"]
-        if data["done_date"]:
-            self.done_date = datetime.strptime(data["done_date"], "%d.%m.%Y"),
+        self.done_date = *(datetime.strptime(data["done_date"], "%d.%m.%Y") if data["done_date"] else None),
         self.text = data["text"]
         self.tag_list = [HashTag(tag) for tag in data["tag_list"]]
 
